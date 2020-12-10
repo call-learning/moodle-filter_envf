@@ -55,8 +55,6 @@ class manage extends external_api {
                 VALUE_OPTIONAL, '', NULL_NOT_ALLOWED),
             'suspended' => new external_value(core_user::get_property_type('suspended'),
                 'Suspend user account, either false to enable user login or true to disable it', VALUE_OPTIONAL),
-            'password' => new external_value(core_user::get_property_type('password'),
-                'Plain text password consisting of any characters', VALUE_OPTIONAL, '', NULL_NOT_ALLOWED),
             'firstname' => new external_value(core_user::get_property_type('firstname'), 'The first name(s) of the user',
                 VALUE_OPTIONAL, '', NULL_NOT_ALLOWED),
             'lastname' => new external_value(core_user::get_property_type('lastname'), 'The family name of the user',
@@ -193,7 +191,7 @@ class manage extends external_api {
                 $userdata[$field] = $existinguser->$field;
             }
         }
-        user_update_user($userdata, !empty($userdata['password']), true);
+        user_update_user($userdata, false, true);
 
         // Update user custom fields.
         if (!empty($userdata['customfields']) &&!empty($disabledfields['customfields'])) {

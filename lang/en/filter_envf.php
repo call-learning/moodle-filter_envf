@@ -29,3 +29,6 @@ $string['pluginname'] = 'ENVF';
 $string['filtername'] = 'ENVF filters';
 $string['disabled_profile_fields'] = 'Disabled and unmodifialbel user profile field';
 $string['disabled_profile_fields_help'] = 'Disabled profile field (that will not be modifiable via filter)';
+$string['btncomplete'] = 'Complete {$a}';
+$string['notenrolledincourse'] = 'Not enrolled in course {$a}, please contact us.';
+$string['download'] = 'Download';

@@ -29,8 +29,6 @@ define(['jquery',
             'username',
             'auth',
             'suspended',
-            'password',
-            'newpassword',
             'firstname',
             'lastname',
             'email',
@@ -120,8 +118,10 @@ define(['jquery',
                                 return acc;
                             }, {});
                         if (typeof formDataCombined['newpassword'] !== undefined)  {
-                            formDataCombined['password'] = formDataCombined['newpassword'];
                             delete formDataCombined['newpassword'];
+                        }
+                        if (typeof formDataCombined['password'] !== undefined)  {
+                            delete formDataCombined['password'];
                         }
                         // Now we can continue and send the data...
                         Ajax.call([{

@@ -26,6 +26,7 @@ namespace filter_envf\local;
 defined('MOODLE_INTERNAL') || die();
 
 use completion_info;
+use core\plugininfo\mod;
 use core_user;
 use html_writer;
 
@@ -75,7 +76,8 @@ class utils {
         if (class_exists('\local_envf\forms\user_edit_form')) {
             $userform = new \local_envf\forms\user_edit_form(null, array(
                 'user' => $user,
-                'allowchangepassword' => false), 'post', '', null, true, $formdata);
+                'allowchangepassword' => false),
+                'post', '', null, true, $formdata);
         } else {
             $userform = new \user_edit_form(null, array(
                 'editoroptions' => $editoroptions,
@@ -92,26 +94,64 @@ class utils {
             $courseidnumber = $matches[1];
             $course = $DB->get_record('course', array('idnumber' => $courseidnumber));
             if ($course) {
-                $completion = new completion_info($course);
-                if ($completion->is_enabled()) {
-                    $modinfo = get_fast_modinfo($course->id);
-                    $activitylist .= html_writer::start_tag('ul', array('class' => 'coursecompletion-act-list'));
-                    foreach ($modinfo->instances as $module => $instances) {
-                        foreach ($instances as $index => $cm) {
-                            if ($cm->completion != COMPLETION_TRACKING_NONE && $cm->is_visible_on_course_page()) {
+                if (is_enrolled(\context_course::instance($course->id))) {
+                    $completion = new completion_info($course);
+                    if ($completion->is_enabled()) {
+                        $activitylist .= html_writer::start_tag('ul', array('class' => 'coursecompletion-act-list'));
+                        $foundincomplete = false;
+                        $activities = $completion->get_activities();
+                        $activitycount = count($activities);
+                        foreach ($activities as $moduleid => $cm) {
+                            if ($cm->is_visible_on_course_page()) {
+                                $content = format_string($cm->name);
+                                $userstatus = $completion->get_data($cm, false);
+                                $available = $cm->available;
+                                $completed = $userstatus->completionstate == COMPLETION_COMPLETE;
+
                                 $content = format_string($cm->name);
                                 if (method_exists($cm->url, 'out')) {
                                     $content = html_writer::link($cm->url, $content,
-                                        array('class' => $cm->available ? '' : 'disabled'));
+                                        array('class' => $available ? '' : 'disabled'));
                                 }
-                                $activitylist .= html_writer::tag('li', $content);
+                                if ((!$completed || $activitycount == 1) && $available && !$foundincomplete) {
+                                    $content .= static::get_complete_or_download_button($cm);
+                                    $foundincomplete = true;
+                                }
+                                $activitylist .= html_writer::tag('li',
+                                    $content,
+                                    array('class' => $completed ? 'status-completed' : '')
+                                );
                             }
+                            $activitycount--;
                         }
+                        $activitylist .= html_writer::end_tag('ul');
                     }
-                    $activitylist .= html_writer::end_tag('ul');
+                } else {
+                    $activitylist = html_writer::div(get_string('notenrolledincourse', 'filter_envf',
+                        $course->fullname), 'alert-warning');
                 }
             }
         }
         return $activitylist;
+    }
+
+    protected static function get_complete_or_download_button(\cm_info $cm) {
+        $link = $cm->url;
+        $label = get_string('btncomplete', 'filter_envf',
+            strtolower(get_string('modulename', $cm->modname)));
+        $attributes = ['class'=> 'btn btn-outline-primary d-inline-block ml-5 mb-1'];
+        if ($cm->modname == 'customcert') {
+            global $DB, $USER;
+            // A bit of a hack here.
+            $issueid = $DB->get_field('customcert_issues', 'id', array('customcertid' => $cm->instance, 'userid' => $USER->id));
+            if ($issueid) {
+                $link = new \moodle_url('/mod/customcert/view.php', array('id' => $cm->id, 'downloadissue' => $issueid));
+                $label = get_string('download', 'filter_envf');
+                $attributes['download'] = true;
+            }
+        }
+        return html_writer::div(
+            html_writer::link($link, $label, $attributes)
+        );
     }
 }
