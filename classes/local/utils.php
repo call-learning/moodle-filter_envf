@@ -76,7 +76,8 @@ class utils {
         if (class_exists('\local_envf\forms\user_edit_form')) {
             $userform = new \local_envf\forms\user_edit_form(null, array(
                 'user' => $user,
-                'allowchangepassword' => false),
+                'allowchangepassword' => false,
+                'hascancelbutton' => false),
                 'post', '', null, true, $formdata);
         } else {
             $userform = new \user_edit_form(null, array(
@@ -137,8 +138,7 @@ class utils {
 
     protected static function get_complete_or_download_button(\cm_info $cm) {
         $link = $cm->url;
-        $label = get_string('btncomplete', 'filter_envf',
-            strtolower(get_string('modulename', $cm->modname)));
+        $label = get_string('btncomplete', 'filter_envf');
         $attributes = ['class'=> 'btn btn-outline-primary d-inline-block ml-5 mb-1'];
         if ($cm->modname == 'customcert') {
             global $DB, $USER;

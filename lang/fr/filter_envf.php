@@ -26,11 +26,11 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['pluginname'] = 'ENVF';
-$string['filtername'] = 'ENVF filters';
-$string['disabled_profile_fields'] = 'Disabled and unmodifiable user profile field';
-$string['disabled_profile_fields_help'] = 'Disabled profile field (that will not be modifiable via filter)';
-$string['btncomplete'] = 'Complete';
-$string['notenrolledincourse'] = 'Not enrolled in course {$a}, please contact us.';
-$string['userupdated'] = 'User {$a->firstname} {$a->lastname} ({$a->email}) updated.';
-$string['failtoupdate'] = 'User {$a->firstname} {$a->lastname} ({$a->email}) could not be updated.';
-$string['download'] = 'Download';
+$string['filtername'] = 'Filtres ENVF';
+$string['disabled_profile_fields'] = 'Champ de profil utilisateur non modifiables.';
+$string['disabled_profile_fields_help'] = 'Champ de profil utilisateur non modifiables (qui ne le seront pas par ce filtre)';
+$string['btncomplete'] = 'Compléter';
+$string['notenrolledincourse'] = 'Vous n\'êtes pas inscrit sur ce cours {$a}, contactez nous.';
+$string['userupdated'] = '{$a->firstname} {$a->lastname} ({$a->email}) mis à jour.';
+$string['failtoupdate'] = '{$a->firstname} {$a->lastname} ({$a->email}) n\'a pas pu être mis à jour.';
+$string['download'] = 'Télécharger';

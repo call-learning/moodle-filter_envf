@@ -71,7 +71,7 @@ class filter_envf extends moodle_text_filter {
             return $text;
         }
         if (!$userprofilemarkerabsent) {
-            $element = html_writer::div('', self::USER_PROFILE_CLASS_MARKER . ' w-auto',
+            $element = html_writer::div('', self::USER_PROFILE_CLASS_MARKER . ' container',
                 array('data-userid' => $USER->id, 'data-contextid' => context_user::instance($USER->id)->id));
             $text = str_replace('{' . self::USER_PROFILE_FORM_TAG_NAME . '}', $element, $text);
         }

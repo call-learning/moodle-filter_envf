@@ -7,15 +7,18 @@
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 define(['jquery',
-        'core/str',
+        'core/str', ,
         'core/fragment',
         'core/templates',
-        'core/ajax'],
+        'core/ajax',
+        'core/notification'
+    ],
     function ($,
               Str,
               Fragment,
               Templates,
               Ajax,
+              Notification
     ) {
         var UserForm = function (formelement, contextid, userid) {
             this.formelementcontainer = formelement;
@@ -142,8 +145,15 @@ define(['jquery',
          * @private
          * @param {Event} e Form submission success.
          */
-        UserForm.prototype.handleFormSubmissionResponse = function () {
-
+        UserForm.prototype.handleFormSubmissionResponse = function (data) {
+            Str.get_string('userupdated', 'filter_envf', data).done(
+                (str) => {
+                    Notification.addNotification({
+                        message: str,
+                        type: "info"
+                    });
+                }
+            );
         };
         /**
          * Private method
@@ -152,8 +162,15 @@ define(['jquery',
          * @private
          * @param {Event} e Form submission failure.
          */
-        UserForm.prototype.handleFormSubmissionFailure = function () {
-
+        UserForm.prototype.handleFormSubmissionFailure = function (data) {
+            Str.get_string('userupdated', 'filter_envf', data).done(
+                (str) => {
+                    Notification.addNotification({
+                        message: str,
+                        type: "warning"
+                    });
+                }
+            );
 
         };
         return {
