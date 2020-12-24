@@ -12,7 +12,7 @@
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
  * Manage user profile
@@ -37,12 +37,20 @@ use external_single_structure;
 use external_value;
 use invalid_parameter_exception;
 
+/**
+ * Class manage
+ *
+ * @package     filter_envf
+ * @copyright   CALL Learning - Laurent David <laurent@call-learning.fr>
+ * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class manage extends external_api {
 
     /**
      * Returns description of method parameters
      *
      * @return external_function_parameters
+     * @throws \coding_exception
      * @since Moodle 2.2
      */
     public static function update_user_parameters() {
@@ -133,9 +141,15 @@ class manage extends external_api {
     /**
      * Update users
      *
-     * @param int $userid
      * @param \stdClass $userdata
      * @return null
+     * @throws \coding_exception
+     * @throws \dml_exception
+     * @throws \dml_transaction_exception
+     * @throws \moodle_exception
+     * @throws \required_capability_exception
+     * @throws \restricted_context_exception
+     * @throws invalid_parameter_exception
      * @since Moodle 2.2
      */
     public static function update_user($userdata) {

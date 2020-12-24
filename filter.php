@@ -12,8 +12,7 @@
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
-use filter_envf\local\utils;
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
  * Plugin version and other meta-data are defined here.
@@ -22,12 +21,28 @@ use filter_envf\local\utils;
  * @copyright   CALL Learning - Laurent David <laurent@call-learning.fr>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
+use filter_envf\output\user_profile_form;
+
+defined('MOODLE_INTERNAL') || die();
+
+/**
+ * Class filter_envf
+ *
+ * @package     filter_envf
+ * @copyright   CALL Learning - Laurent David <laurent@call-learning.fr>
+ * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class filter_envf extends moodle_text_filter {
 
+    /**
+     * Tag for form filter
+     */
     const USER_PROFILE_FORM_TAG_NAME = 'userprofileform';
+    /**
+     * Tag for course progress (the courseidnumber must also be provided).
+     */
     const COURSE_PROGRESSS_TAG_NAME = 'courseprogress';
-
-    const USER_PROFILE_CLASS_MARKER = 'user-profile-form-filter';
 
     /**
      * Setup page with filter requirements and other prepare stuff.
@@ -43,7 +58,7 @@ class filter_envf extends moodle_text_filter {
         }
         $jsinitialised = true;
         $page->requires->js_call_amd('filter_envf/userprofileform', 'init', array(array(
-            'classmarker' => self::USER_PROFILE_CLASS_MARKER
+            'classmarker' => 'user_profile_form'
         )));
     }
 
@@ -71,15 +86,16 @@ class filter_envf extends moodle_text_filter {
             return $text;
         }
         if (!$userprofilemarkerabsent) {
-            $element = html_writer::div('', self::USER_PROFILE_CLASS_MARKER . ' container',
-                array('data-userid' => $USER->id, 'data-contextid' => context_user::instance($USER->id)->id));
+            global $PAGE;
+            $renderer = $PAGE->get_renderer('filter_envf');
+            $element = $renderer->render(new user_profile_form($USER->id, context_user::instance($USER->id)->id));
             $text = str_replace('{' . self::USER_PROFILE_FORM_TAG_NAME . '}', $element, $text);
         }
         if (!$courseprogressmarkerabsent) {
             global $CFG;
             if ($CFG->enablecompletion) {
                 $text = preg_replace_callback(
-                    '/{' . self::COURSE_PROGRESSS_TAG_NAME . '\s+courseidnumber="(\w+)"\s*}/',
+                    '/{\s*' . self::COURSE_PROGRESSS_TAG_NAME . '\s+courseidnumber="(\w+)"\s*}/',
                     function($matches) {
                         return \filter_envf\local\utils::replace_with_activity_list($matches);
                     },

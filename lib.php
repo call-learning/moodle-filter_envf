@@ -12,7 +12,7 @@
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
  * Plugin version and other meta-data are defined here.
@@ -22,9 +22,15 @@
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 defined('MOODLE_INTERNAL') || die();
+
 use filter_envf\local\utils;
 
-
+/**
+ * Form fragment callback
+ *
+ * @param array $args
+ * @return string|null
+ */
 function filter_envf_output_fragment_userprofile_form($args) {
     global $CFG;
     $context = $args['context'];
@@ -34,7 +40,6 @@ function filter_envf_output_fragment_userprofile_form($args) {
         $serialiseddata = json_decode($args['jsonformdata']);
         parse_str($serialiseddata, $formdata);
     }
-    /** @var context_user $context */
     if ($context->contextlevel != CONTEXT_USER) {
         return null;
     }
@@ -46,5 +51,5 @@ function filter_envf_output_fragment_userprofile_form($args) {
         // If we were passed non-empty form data we want the mform to call validation functions and show errors.
         $formvalid = $mform->is_validated();
     }
-    return $mform->render() . html_writer::div('','upf-userformvalidated', array('data-validated'=>$formvalid));
+    return $mform->render() . html_writer::div('', 'upf-userformvalidated', array('data-validated' => $formvalid));
 }

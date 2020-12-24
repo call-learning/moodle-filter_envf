@@ -15,22 +15,33 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Plugin strings are defined here.
+ * Privacy provider
  *
  * @package     filter_envf
- * @category    string
  * @copyright   CALL Learning - Laurent David <laurent@call-learning.fr>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+namespace filter_envf\privacy;
+
 defined('MOODLE_INTERNAL') || die();
 
-$string['pluginname'] = 'ENVF';
-$string['filtername'] = 'Filtres ENVF';
-$string['disabled_profile_fields'] = 'Champ de profil utilisateur non modifiables.';
-$string['disabled_profile_fields_help'] = 'Champ de profil utilisateur non modifiables (qui ne le seront pas par ce filtre)';
-$string['btncomplete'] = 'Compléter';
-$string['notenrolledincourse'] = 'Vous n\'êtes pas inscrit sur ce cours {$a}, contactez nous.';
-$string['userupdated'] = '{$a->firstname} {$a->lastname} ({$a->email}) mis à jour.';
-$string['failtoupdate'] = '{$a->firstname} {$a->lastname} ({$a->email}) n\'a pas pu être mis à jour.';
-$string['download'] = 'Télécharger';
+/**
+ * Privacy Subsystem for filter_envf implementing null_provider.
+ *
+ * @package     filter_envf
+ * @copyright   CALL Learning - Laurent David <laurent@call-learning.fr>
+ * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+class provider implements \core_privacy\local\metadata\null_provider {
+
+    /**
+     * Get the language string identifier with the component's language
+     * file to explain why this plugin stores no data.
+     *
+     * @return  string
+     */
+    public static function get_reason() : string {
+        return 'privacy:metadata';
+    }
+}
