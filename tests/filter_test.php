@@ -85,10 +85,13 @@ class filter_envf_filter_testcase extends advanced_testcase {
 
         $this->assertContains('<ul class="coursecompletion-act-list">', $filtered);
         // There should be 2 links links.
+        $this->assertNotNull($matches);
         $this->assertCount(2, $matches);
+        $this->assertCount(2, $matches);
+        $this->assertCount(3, $matches[1]);
         // Check the text of the li.
-        $this->assertEquals($this->pages[0]->cmid, $matches[1][0]);
-        $this->assertEquals($this->pages[1]->cmid, $matches[1][1]);
+        $this->assertEquals($this->pages[0]->cmid, $matches[1][1]);
+        $this->assertEquals($this->pages[1]->cmid, $matches[1][2]);
     }
 
     /**

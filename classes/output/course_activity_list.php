@@ -119,7 +119,7 @@ class course_activity_list implements renderable, templatable {
      */
     protected function get_complete_or_download_button(\cm_info $cm) {
         $data = new stdClass();
-        $data->url = $cm->url->out();
+        $data->link = $cm->url->out();
         $data->label = get_string('btncomplete', 'filter_envf');
         if ($cm->modname == 'customcert') {
             global $DB, $USER;
