@@ -89,6 +89,9 @@ class utils {
             $userform = new \local_envf\forms\user_edit_form(null, array(
                 'user' => $user,
                 'allowchangepassword' => false,
+                'allowchangeemail' => false,
+                'displayemail' => false,
+                'btnclassoverride' => 'btn btn-outline-primary',
                 'hascancelbutton' => false),
                 'post', '', null, true, $formdata);
         } else {
