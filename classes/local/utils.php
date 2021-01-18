@@ -84,13 +84,15 @@ class utils {
             0,
             $filemanageroptions);
         $user->imagefile = $draftitemid;
+        // Load user preferences.
+        useredit_load_preferences($user);
         // Create form.
         if (class_exists('\local_envf\forms\user_edit_form')) {
             $userform = new \local_envf\forms\user_edit_form(null, array(
                 'user' => $user,
                 'allowchangepassword' => false,
                 'allowchangeemail' => false,
-                'displayemail' => false,
+                'displayemail' => true,
                 'btnclassoverride' => 'btn btn-outline-primary',
                 'hascancelbutton' => false),
                 'post', '', null, true, $formdata);
