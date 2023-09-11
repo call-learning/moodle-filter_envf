@@ -22,10 +22,9 @@
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 namespace filter_envf\local;
-defined('MOODLE_INTERNAL') || die();
-
 use core_user;
 use filter_envf\output\course_activity_list;
+use theme_envf\form\user_edit_form;
 
 /**
  * Class utils
@@ -39,7 +38,7 @@ class utils {
      * Get the profile form
      * @param \context $context
      * @param object $formdata
-     * @return \local_envf\forms\user_edit_form|\user_edit_form
+     * @return user_edit_form
      * @throws \coding_exception
      * @throws \dml_exception
      */
@@ -87,8 +86,8 @@ class utils {
         // Load user preferences.
         useredit_load_preferences($user);
         // Create form.
-        if (class_exists('\local_envf\forms\user_edit_form')) {
-            $userform = new \local_envf\forms\user_edit_form(null, array(
+        if (class_exists('\theme_envf\form\user_edit_form')) {
+            $userform = new user_edit_form(null, array(
                 'user' => $user,
                 'allowchangepassword' => false,
                 'allowchangeemail' => false,

@@ -147,6 +147,8 @@ class filter_envf_filter_testcase extends advanced_testcase {
      * @return array[]
      */
     public function activity_list_provider() {
+        global $CFG;
+        require_once($CFG->libdir.'/completionlib.php');
         return array(
             'No completion' => array(
                 'expectedcount' => 2,
