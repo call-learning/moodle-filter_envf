@@ -13,18 +13,8 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
-
-/**
- * Privacy provider
- *
- * @package     filter_envf
- * @copyright   CALL Learning - Laurent David <laurent@call-learning.fr>
- * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */
-
 namespace filter_envf\privacy;
 
-defined('MOODLE_INTERNAL') || die();
 
 /**
  * Privacy Subsystem for filter_envf implementing null_provider.

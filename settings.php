@@ -31,5 +31,4 @@ if ($ADMIN->fulltree) {
         'auth,description,customfields,preferences',
         PARAM_RAW)
     );
-
 }

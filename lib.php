@@ -13,7 +13,6 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
-
 /**
  * Plugin version and other meta-data are defined here.
  *
@@ -21,8 +20,6 @@
  * @copyright   CALL Learning - Laurent David <laurent@call-learning.fr>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-defined('MOODLE_INTERNAL') || die();
-
 use filter_envf\local\utils;
 
 /**
@@ -37,15 +34,14 @@ function filter_envf_output_fragment_userprofile_form($args) {
 
     $formdata = [];
     if (!empty($args['jsonformdata'])) {
-        $serialiseddata = json_decode($args['jsonformdata']);
-        parse_str($serialiseddata, $formdata);
+        $formdata = json_decode($args['jsonformdata'], true);
     }
     if ($context->contextlevel != CONTEXT_USER) {
         return null;
     }
 
     $mform = utils::get_user_profile_form($context, $formdata);
-
+    $mform->set_data($formdata);
     $formvalid = true;
     if (!empty($formdata)) {
         // If we were passed non-empty form data we want the mform to call validation functions and show errors.

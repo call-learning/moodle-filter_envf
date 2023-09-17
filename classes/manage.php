@@ -201,7 +201,7 @@ class manage extends external_api {
             $disabledfields = explode(',', $nonmodfieldsetting);
         }
         foreach ($disabledfields as $field) {
-            if (isset($existinguser->field)) {
+            if (isset($existinguser->$field)) {
                 $userdata[$field] = $existinguser->$field;
             }
         }

@@ -2,6 +2,8 @@
 
 Filters for ENVF (user profile form and course completion info).
 
+[![Moodle plugin CI for Moodle 3.9 and 3.10](https://github.com/call-learning/moodle-filter_envf/actions/workflows/main.yml/badge.svg)](https://github.com/call-learning/moodle-filter_envf/actions/workflows/main.yml)
+
 ## License ##
 
 CALL Learning - Laurent David <laurent@call-learning.fr>

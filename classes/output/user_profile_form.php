@@ -23,7 +23,6 @@
  */
 
 namespace filter_envf\output;
-defined('MOODLE_INTERNAL') || die();
 
 use completion_info;
 use renderable;

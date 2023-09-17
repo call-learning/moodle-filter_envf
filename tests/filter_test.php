@@ -20,6 +20,13 @@
  * @copyright   CALL Learning - Laurent David <laurent@call-learning.fr>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+namespace filter_envf;
+use advanced_testcase;
+use completion_info;
+use context_course;
+use moodle_exception;
+use stdClass;
+
 defined('MOODLE_INTERNAL') || die();
 
 global $CFG;
@@ -32,7 +39,7 @@ require_once($CFG->dirroot . '/filter/envf/filter.php'); // Include the code to 
  * @copyright   CALL Learning - Laurent David <laurent@call-learning.fr>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class filter_envf_filter_testcase extends advanced_testcase {
+class filter_test extends advanced_testcase {
 
     /**
      * @var stdClass|null $course
@@ -62,13 +69,14 @@ class filter_envf_filter_testcase extends advanced_testcase {
 
     /**
      * Test that basic activity list is generated
+     * @covers \filter_envf
      */
     public function test_activity_list_filter() {
         $context = context_course::instance($this->course->id);
         $html = "<span>{courseprogress courseidnumber=\"qcourse\"}</span>";
         $filtered = format_text($html, FORMAT_HTML, array('context' => $context));
 
-        // There should be 0 links links.
+        // There should be 0 links.
         $this->assertNotContains('<ul class="coursecompletion-act-list">', $filtered);
         $this->assertContains('Not enrolled in course , please contact us', $filtered);
 
@@ -96,6 +104,7 @@ class filter_envf_filter_testcase extends advanced_testcase {
 
     /**
      * Test that basic user filter html is generated
+     * @covers \filter_envf
      */
     public function test_user_profile_filter() {
         $user = $this->getDataGenerator()->create_user();

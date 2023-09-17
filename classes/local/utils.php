@@ -23,8 +23,8 @@
  */
 namespace filter_envf\local;
 use core_user;
+use filter_envf\form\envf_user_edit_form;
 use filter_envf\output\course_activity_list;
-use theme_envf\form\user_edit_form;
 
 /**
  * Class utils
@@ -38,7 +38,7 @@ class utils {
      * Get the profile form
      * @param \context $context
      * @param object $formdata
-     * @return user_edit_form
+     * @return \user_edit_form
      * @throws \coding_exception
      * @throws \dml_exception
      */
@@ -86,21 +86,23 @@ class utils {
         // Load user preferences.
         useredit_load_preferences($user);
         // Create form.
-        if (class_exists('\theme_envf\form\user_edit_form')) {
-            $userform = new user_edit_form(null, array(
-                'user' => $user,
+        $userform = new envf_user_edit_form(
+            null,
+            [
+                'editoroptions' => $editoroptions,
+                'filemanageroptions' => $filemanageroptions,
                 'allowchangepassword' => false,
                 'allowchangeemail' => false,
                 'displayemail' => true,
                 'btnclassoverride' => 'btn btn-outline-primary',
-                'hascancelbutton' => false),
-                'post', '', null, true, $formdata);
-        } else {
-            $userform = new \user_edit_form(null, array(
-                'editoroptions' => $editoroptions,
-                'filemanageroptions' => $filemanageroptions,
-                'user' => $user), 'post', '', null, true, $formdata);
-        }
+                'hascancelbutton' => false,
+                'user' => $user
+            ], 'post',
+            '',
+            null,
+            true,
+            $formdata
+        );
         return $userform;
     }
 

@@ -25,7 +25,11 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'filter_envf';
-$plugin->release = '0.1.0';
-$plugin->version = 2020120501;
+$plugin->release = '1.0.0';
+$plugin->version = 2023091600;
 $plugin->requires = 2020061500;
 $plugin->maturity = MATURITY_ALPHA;
+$plugin->dependencies = [
+    'mod_customcert' => ANY_VERSION,
+    'auth_psup' => ANY_VERSION,
+];

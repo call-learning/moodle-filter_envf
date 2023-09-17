@@ -24,13 +24,13 @@
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 defined('MOODLE_INTERNAL') || die();
-$functions = array(
-    'filter_envf_update_user' => array(
-        'classname'   => '\filter_envf\manage',
-        'methodname'  => 'update_user',
+$functions = [
+    'filter_envf_update_user' => [
+        'classname' => '\filter_envf\manage',
+        'methodname' => 'update_user',
         'description' => 'User updates own information',
-        'type'        => 'write',
-        'ajax'          => true,
+        'type' => 'write',
+        'ajax' => true,
         'loginrequired' => true,
-    )
-);
+    ]
+];

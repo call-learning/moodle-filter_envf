@@ -27,10 +27,12 @@ defined('MOODLE_INTERNAL') || die();
 
 $string['pluginname'] = 'ENVF';
 $string['filtername'] = 'ENVF filters';
-$string['disabled_profile_fields'] = 'Disabled and unmodifiable user profile field';
+$string['disabled_profile_fields'] = 'Disabled and unmodifiable user profile field via the API.';
 $string['disabled_profile_fields_help'] = 'Disabled profile field (that will not be modifiable via filter)';
 $string['btncomplete'] = 'Complete';
 $string['notenrolledincourse'] = 'Not enrolled in course {$a}, please contact us.';
 $string['userupdated'] = 'User {$a->firstname} {$a->lastname} updated.';
 $string['failtoupdate'] = 'User {$a->firstname} {$a->lastname} could not be updated.';
 $string['download'] = 'Download';
+$string['updatemyprofile'] = 'Update my profile';
+$string['userform_plugin'] = 'Plugin in which user form is located (default: theme_envf)';

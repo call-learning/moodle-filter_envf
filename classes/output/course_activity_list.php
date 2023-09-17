@@ -13,17 +13,7 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
-
-/**
- * Filter ENVF renderer
- *
- * @package     filter_envf
- * @copyright   CALL Learning - Laurent David <laurent@call-learning.fr>
- * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */
-
 namespace filter_envf\output;
-defined('MOODLE_INTERNAL') || die();
 
 use completion_info;
 use renderable;

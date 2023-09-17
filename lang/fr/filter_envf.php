@@ -27,10 +27,12 @@ defined('MOODLE_INTERNAL') || die();
 
 $string['pluginname'] = 'ENVF';
 $string['filtername'] = 'Filtres ENVF';
-$string['disabled_profile_fields'] = 'Champ de profil utilisateur non modifiables.';
+$string['disabled_profile_fields'] = 'Champ de profil utilisateur non modifiables par le filtre.';
 $string['disabled_profile_fields_help'] = 'Champ de profil utilisateur non modifiables (qui ne le seront pas par ce filtre)';
 $string['btncomplete'] = 'Compléter';
 $string['notenrolledincourse'] = 'Vous n\'êtes pas inscrit sur ce cours {$a}, contactez nous.';
 $string['userupdated'] = 'Utilisateur {$a->firstname} {$a->lastname} mis à jour.';
 $string['failtoupdate'] = 'L\'utilisateur {$a->firstname} {$a->lastname} n\'a pas pu être mis à jour.';
 $string['download'] = 'Télécharger';
+$string['updatemyprofile'] = 'Mettre à jour mes informations';
+
