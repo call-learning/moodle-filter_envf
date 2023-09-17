@@ -15,8 +15,8 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 namespace filter_envf\form;
 
+use auth_psup\utils;
 use coding_exception;
-use core\session\manager;
 use core_component;
 use core_text;
 use core_user;
@@ -122,7 +122,7 @@ class envf_user_edit_form extends \user_edit_form {
         $mform->addHelpButton('auth', 'chooseauthmethod', 'auth');
 
         $purpose = user_edit_map_field_purpose($userid, 'username');
-        $usernamelabel = self::get_username_label($userid);
+        $usernamelabel = utils::get_username_label($userid);
 
         $mform->addElement('text', 'username', $usernamelabel, 'size="20"' . $purpose);
         $mform->addHelpButton('username', 'username', 'auth');
@@ -289,25 +289,6 @@ class envf_user_edit_form extends \user_edit_form {
         }
 
         return $errors;
-    }
-
-    /**
-     * Get the right label for username (either username or parcoursupid)
-     *
-     * @param int $userid
-     * @return string
-     */
-    public static function get_username_label($userid) {
-        global $USER;
-        $iscurrentuser = $userid == $USER->id && !manager::is_loggedinas();
-
-        if ((!isloggedin() || $iscurrentuser) && $userid) {
-            $currentuser = core_user::get_user($userid);
-            if ($currentuser && $currentuser->auth == 'psup') {
-                return get_string('psupid', 'auth_psup');
-            }
-        }
-        return get_string('username');
     }
 }
 
