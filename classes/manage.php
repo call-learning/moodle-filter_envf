@@ -92,12 +92,6 @@ class manage extends external_api {
             // Interests.
             'interests' => new external_value(PARAM_TEXT, 'User interests (separated by commas)', VALUE_OPTIONAL),
             // Optional.
-            'url' => new external_value(core_user::get_property_type('url'), 'User web page', VALUE_OPTIONAL),
-            'icq' => new external_value(core_user::get_property_type('icq'), 'ICQ number', VALUE_OPTIONAL),
-            'skype' => new external_value(core_user::get_property_type('skype'), 'Skype ID', VALUE_OPTIONAL),
-            'aim' => new external_value(core_user::get_property_type('aim'), 'AIM ID', VALUE_OPTIONAL),
-            'yahoo' => new external_value(core_user::get_property_type('yahoo'), 'Yahoo ID', VALUE_OPTIONAL),
-            'msn' => new external_value(core_user::get_property_type('msn'), 'MSN ID', VALUE_OPTIONAL),
             'idnumber' => new external_value(core_user::get_property_type('idnumber'),
                 'An arbitrary ID code number perhaps from the institution', VALUE_OPTIONAL),
             'institution' => new external_value(core_user::get_property_type('institution'), 'Institution', VALUE_OPTIONAL),

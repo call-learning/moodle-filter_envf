@@ -48,9 +48,8 @@
                 {{#url}}<a class="{{#isdisabled}}disabled{{/isdisabled}}" href="{{url}}">{{{name}}}</a>{{/url}}
                 {{^url}}{{{name}}}{{/url}}
                 {{#actionbutton}}
-                    <div class="coursecompletion-action-button">
-                    <a  class="btn btn-outline-primary d-inline-block ml-5 mb-1" href="{{link}}"
-                        {{#isdownload}}download="true"{{/isdownload}}>{{label}}</a>
+                    <div class="coursecompletion-action-button px-5 py-3">
+                        <a class="btn btn-outline-primary" href="{{link}}" {{#isdownload}}download="true"{{/isdownload}}>{{label}}</a>
                     </div>
                 {{/actionbutton}}
             </li>
