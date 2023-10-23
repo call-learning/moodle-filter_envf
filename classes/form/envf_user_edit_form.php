@@ -164,7 +164,7 @@ class envf_user_edit_form extends \user_edit_form {
         }
 
         // Display a custom button if needed.
-        $submitlabel = get_string('updatemyprofile', 'theme_envf');
+        $submitlabel = get_string('updatemyprofile', 'filter_envf');
         $btndisplayoptions = [];
         $btnclassoverride = $this->_customdata['btnclassoverride'] ?? false;
         if ($btnclassoverride) {

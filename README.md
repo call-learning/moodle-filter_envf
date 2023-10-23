@@ -2,7 +2,7 @@
 
 Filters for ENVF (user profile form and course completion info).
 
-[![Moodle plugin CI for Moodle 3.9 and 3.10](https://github.com/call-learning/moodle-filter_envf/actions/workflows/main.yml/badge.svg)](https://github.com/call-learning/moodle-filter_envf/actions/workflows/main.yml)
+[![Moodle Plugin CI](https://github.com/call-learning/moodle-filter_envf/actions/workflows/ci.yml/badge.svg?branch=MOODLE_401_STABLE)](https://github.com/call-learning/moodle-filter_envf/actions/workflows/ci.yml)
 
 ## License ##
 

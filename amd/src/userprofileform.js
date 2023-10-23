@@ -2,7 +2,6 @@
  * Add the form to the page
  *
  * @module      filter_envf/userprofileform.js
- * @package     filter_envf
  * @copyright   CALL Learning - Laurent David <laurent@call-learning.fr>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
