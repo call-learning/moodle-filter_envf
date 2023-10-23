@@ -157,7 +157,7 @@ class envf_user_edit_form extends \user_edit_form {
 
         $purpose = user_edit_map_field_purpose($user->id, 'country');
         $choices = get_string_manager()->get_list_of_countries();
-        $choices = array('' => get_string('selectacountry') . '...') + $choices;
+        $choices = ['' => get_string('selectacountry') . '...'] + $choices;
         $mform->addElement('select', 'country', get_string('selectacountry'), $choices, $purpose);
         if (!empty($CFG->country)) {
             $mform->setDefault('country', core_user::get_property_default('country'));
@@ -172,7 +172,7 @@ class envf_user_edit_form extends \user_edit_form {
         }
         if ($hascancelbutton) {
             // When two elements we need a group.
-            $buttonarray = array();
+            $buttonarray = [];
             $buttonarray[] = &$mform->createElement(
                     'submit',
                     'submitbutton',
@@ -181,7 +181,7 @@ class envf_user_edit_form extends \user_edit_form {
                     null,
                     $btndisplayoptions);
             $buttonarray[] = &$mform->createElement('cancel');
-            $mform->addGroup($buttonarray, 'buttonar', '', array(' '), false);
+            $mform->addGroup($buttonarray, 'buttonar', '', [' '], false);
             $mform->closeHeaderBefore('buttonar');
         } else {
             // No group needed.
@@ -206,9 +206,9 @@ class envf_user_edit_form extends \user_edit_form {
         $auths = core_component::get_plugin_list('auth');
         $enabled = get_string('pluginenabled', 'core_plugin');
         $disabled = get_string('plugindisabled', 'core_plugin');
-        $authoptions = array($enabled => array(), $disabled => array());
-        $cannotchangepass = array();
-        $cannotchangeusername = array();
+        $authoptions = [$enabled => [], $disabled => []];
+        $cannotchangepass = [];
+        $cannotchangeusername = [];
         foreach ($auths as $auth => $unused) {
             $authinst = get_auth_plugin($auth);
 
@@ -230,7 +230,7 @@ class envf_user_edit_form extends \user_edit_form {
                 $authoptions[$disabled][$auth] = get_string('pluginname', "auth_{$auth}");
             }
         }
-        return array($authoptions, $cannotchangepass, $cannotchangeusername);
+        return [$authoptions, $cannotchangepass, $cannotchangeusername];
     }
 
     /**
@@ -258,7 +258,7 @@ class envf_user_edit_form extends \user_edit_form {
 
         $usernew = (object)$usernew;
         $usernew->username = trim($usernew->username);
-        $user = $DB->get_record('user', array('id' => $usernew->id));
+        $user = $DB->get_record('user', ['id' => $usernew->id]);
         // Validate email.
         if (!isset($usernew->email)) {
             $errors['email'] = get_string('invalidemail');
@@ -275,7 +275,7 @@ class envf_user_edit_form extends \user_edit_form {
             $errors['username'] = get_string('required');
         } else if (!$user || $user->username !== $usernew->username) {
             // Check new username does not exist.
-            if ($DB->record_exists('user', array('username' => $usernew->username, 'mnethostid' => $CFG->mnet_localhost_id))) {
+            if ($DB->record_exists('user', ['username' => $usernew->username, 'mnethostid' => $CFG->mnet_localhost_id])) {
                 $errors['username'] = get_string('usernameexists');
             }
             // Check allowed characters.

@@ -114,10 +114,10 @@ class course_activity_list implements renderable, templatable {
         if ($cm->modname == 'customcert') {
             global $DB, $USER;
             // A bit of a hack here.
-            $issueid = $DB->get_field('customcert_issues', 'id', array('customcertid' => $cm->instance, 'userid' => $USER->id));
+            $issueid = $DB->get_field('customcert_issues', 'id', ['customcertid' => $cm->instance, 'userid' => $USER->id]);
             if ($issueid) {
                 $data->link = (new \moodle_url('/mod/customcert/view.php',
-                    array('id' => $cm->id, 'downloadissue' => $issueid)))->out(false);
+                    ['id' => $cm->id, 'downloadissue' => $issueid]))->out(false);
                 $data->label = get_string('download', 'filter_envf');
                 $data->download = true;
             }

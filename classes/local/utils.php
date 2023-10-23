@@ -54,13 +54,13 @@ class utils {
         profile_load_data($user);
 
         // Prepare the editor and create form.
-        $editoroptions = array(
+        $editoroptions = [
             'maxfiles' => EDITOR_UNLIMITED_FILES,
             'maxbytes' => $CFG->maxbytes,
             'trusttext' => false,
             'forcehttps' => false,
-            'context' => $context
-        );
+            'context' => $context,
+        ];
 
         $user = file_prepare_standard_editor($user,
             'description',
@@ -72,10 +72,10 @@ class utils {
         // Prepare filemanager draft area.
         $draftitemid = 0;
         $filemanagercontext = $editoroptions['context'];
-        $filemanageroptions = array('maxbytes' => $CFG->maxbytes,
+        $filemanageroptions = ['maxbytes' => $CFG->maxbytes,
             'subdirs' => 0,
             'maxfiles' => 1,
-            'accepted_types' => 'optimised_image');
+            'accepted_types' => 'optimised_image', ];
         file_prepare_draft_area($draftitemid,
             $filemanagercontext->id,
             'user',
@@ -96,7 +96,7 @@ class utils {
                 'displayemail' => true,
                 'btnclassoverride' => 'btn btn-outline-primary',
                 'hascancelbutton' => false,
-                'user' => $user
+                'user' => $user,
             ], 'post',
             '',
             null,
@@ -119,7 +119,7 @@ class utils {
         $activitylist = '';
         if ($matches && count($matches)) {
             $courseidnumber = $matches[1];
-            $course = $DB->get_record('course', array('idnumber' => $courseidnumber));
+            $course = $DB->get_record('course', ['idnumber' => $courseidnumber]);
             if ($course) {
                 global $USER;
                 $renderer = $PAGE->get_renderer('filter_envf');

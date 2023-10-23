@@ -46,9 +46,9 @@ class filter_envf extends moodle_text_filter {
             return;
         }
         $jsinitialised = true;
-        $page->requires->js_call_amd('filter_envf/userprofileform', 'init', array(array(
-            'classmarker' => 'user_profile_form'
-        )));
+        $page->requires->js_call_amd('filter_envf/userprofileform', 'init', [[
+            'classmarker' => 'user_profile_form',
+        ], ]);
     }
 
     /**
@@ -61,7 +61,7 @@ class filter_envf extends moodle_text_filter {
      * @param array $options filter options
      * @return string text after processing
      */
-    public function filter($text, array $options = array()) {
+    public function filter($text, array $options = []) {
         global $USER;
 
         // Basic test to avoid unnecessary work.

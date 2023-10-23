@@ -113,7 +113,7 @@ class manage extends external_api {
                 new external_single_structure(
                     [
                         'type' => new external_value(PARAM_ALPHANUMEXT, 'The name of the custom field'),
-                        'value' => new external_value(PARAM_RAW, 'The value of the custom field')
+                        'value' => new external_value(PARAM_RAW, 'The value of the custom field'),
                     ]
                 ), 'User custom fields (also known as user profil fields)', VALUE_OPTIONAL),
             // User preferences.
@@ -121,13 +121,13 @@ class manage extends external_api {
                 new external_single_structure(
                     [
                         'type' => new external_value(PARAM_RAW, 'The name of the preference'),
-                        'value' => new external_value(PARAM_RAW, 'The value of the preference')
+                        'value' => new external_value(PARAM_RAW, 'The value of the preference'),
                     ]
                 ), 'User preferences', VALUE_OPTIONAL),
         ];
         return new external_function_parameters(
             [
-                'userdata' => new external_single_structure($userfields)
+                'userdata' => new external_single_structure($userfields),
             ]
         );
     }
@@ -176,11 +176,11 @@ class manage extends external_api {
             } else if (empty($CFG->allowaccountssameemail)) {
                 // Make a case-insensitive query for the given email address and make sure to exclude the user being updated.
                 $select = $DB->sql_equal('email', ':email', false) . ' AND mnethostid = :mnethostid AND id <> :userid';
-                $params = array(
+                $params = [
                     'email' => $userdata['email'],
                     'mnethostid' => $CFG->mnet_localhost_id,
-                    'userid' => $userdata['id']
-                );
+                    'userid' => $userdata['id'],
+                ];
                 // Skip if there are other user(s) that already have the same email.
                 if ($DB->record_exists_select('user', $select, $params)) {
                     throw new invalid_parameter_exception('A user with this email already exists.');

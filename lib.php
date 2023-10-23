@@ -47,5 +47,5 @@ function filter_envf_output_fragment_userprofile_form($args) {
         // If we were passed non-empty form data we want the mform to call validation functions and show errors.
         $formvalid = $mform->is_validated();
     }
-    return $mform->render() . html_writer::div('', 'upf-userformvalidated', array('data-validated' => $formvalid));
+    return $mform->render() . html_writer::div('', 'upf-userformvalidated', ['data-validated' => $formvalid]);
 }

@@ -20,11 +20,12 @@
  * @copyright   CALL Learning - Laurent David <laurent@call-learning.fr>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
 namespace filter_envf;
+
 use advanced_testcase;
 use completion_info;
 use context_course;
-use moodle_exception;
 use stdClass;
 
 defined('MOODLE_INTERNAL') || die();
@@ -51,13 +52,57 @@ class filter_test extends advanced_testcase {
     protected $pages = [];
 
     /**
+     * Data provider for test_activity_list_renderer test
+     *
+     * @return array[]
+     */
+    public static function activity_list_provider(): array {
+        global $CFG;
+        require_once($CFG->libdir . '/completionlib.php');
+        return [
+            'No completion' => [
+                'expectedcount' => 2,
+                'completions' => [COMPLETION_NOT_VIEWED, COMPLETION_NOT_VIEWED],
+                'activities' => [
+                    ['name' => 'Step 1', 'isdisabled' => false, 'iscompleted' => false, 'hasactionbutton' => true],
+                    ['name' => 'Step 2', 'isdisabled' => false, 'iscompleted' => false, 'hasactionbutton' => false],
+                ],
+            ],
+            'First activity completed' => [
+                'expectedcount' => 2,
+                'completions' => [COMPLETION_COMPLETE, COMPLETION_NOT_VIEWED],
+                'activities' => [
+                    ['name' => 'Step 1', 'isdisabled' => false, 'iscompleted' => true, 'hasactionbutton' => false],
+                    ['name' => 'Step 2', 'isdisabled' => false, 'iscompleted' => false, 'hasactionbutton' => true],
+                ],
+            ],
+            'Both activity completed' => [
+                'expectedcount' => 2,
+                'completions' => [COMPLETION_COMPLETE, COMPLETION_COMPLETE],
+                'activities' => [
+                    ['name' => 'Step 1', 'isdisabled' => false, 'iscompleted' => true, 'hasactionbutton' => false],
+                    ['name' => 'Step 2', 'isdisabled' => false, 'iscompleted' => true, 'hasactionbutton' => true],
+                ],
+            ],
+            'Only second activity completed' => [
+                'expectedcount' => 2,
+                'completions' => [COMPLETION_NOT_VIEWED, COMPLETION_COMPLETE],
+                'activities' => [
+                    ['name' => 'Step 1', 'isdisabled' => false, 'iscompleted' => false, 'hasactionbutton' => true],
+                    ['name' => 'Step 2', 'isdisabled' => false, 'iscompleted' => true, 'hasactionbutton' => false],
+                ],
+            ],
+        ];
+    }
+
+    /**
      * Setup the test: a course with two pages
      */
-    public function setUp() {
+    public function setUp(): void {
         $this->resetAfterTest(true);
 
         // Create a test course.
-        $course = $this->getDataGenerator()->create_course(array('idnumber' => 'qcourse', 'enablecompletion' => 1));
+        $course = $this->getDataGenerator()->create_course(['idnumber' => 'qcourse', 'enablecompletion' => 1]);
         // Create two pages that will be linked to.
         $this->pages[] = $this->getDataGenerator()->create_module('page',
             ['course' => $course->id, 'name' => 'Step 1', 'completion' => 2, 'completionview' => 1]);
@@ -69,29 +114,30 @@ class filter_test extends advanced_testcase {
 
     /**
      * Test that basic activity list is generated
-     * @covers \filter_envf
+     *
+     * @covers \filter_envf\output\course_activity_list
      */
     public function test_activity_list_filter() {
         $context = context_course::instance($this->course->id);
         $html = "<span>{courseprogress courseidnumber=\"qcourse\"}</span>";
-        $filtered = format_text($html, FORMAT_HTML, array('context' => $context));
+        $filtered = format_text($html, FORMAT_HTML, ['context' => $context]);
 
         // There should be 0 links.
-        $this->assertNotContains('<ul class="coursecompletion-act-list">', $filtered);
-        $this->assertContains('Not enrolled in course , please contact us', $filtered);
+        $this->assertStringNotContainsString('<ul class="coursecompletion-act-list">', $filtered);
+        $this->assertStringContainsString('Not enrolled in course , please contact us', $filtered);
 
         // Now with an enrolled user.
         $user = $this->getDataGenerator()->create_user();
         $this->setUser($user);
         $this->getDataGenerator()->enrol_user($user->id, $this->course->id);
-        $filtered = format_text($html, FORMAT_HTML, array('context' => $context));
+        $filtered = format_text($html, FORMAT_HTML, ['context' => $context]);
 
         // Find all the links in the result.
         $matches = [];
         preg_match_all('|href="[^"]*/mod/page/view.php\?id=([0-9]+)"|',
             $filtered, $matches);
 
-        $this->assertContains('<ul class="coursecompletion-act-list">', $filtered);
+        $this->assertStringContainsString('<ul class="coursecompletion-act-list">', $filtered);
         // There should be 2 links links.
         $this->assertNotNull($matches);
         $this->assertCount(2, $matches);
@@ -104,16 +150,17 @@ class filter_test extends advanced_testcase {
 
     /**
      * Test that basic user filter html is generated
-     * @covers \filter_envf
+     *
+     * @covers \filter_envf\output\user_profile_form
      */
     public function test_user_profile_filter() {
         $user = $this->getDataGenerator()->create_user();
         $this->setUser($user);
         $context = context_course::instance($this->course->id);
         $html = "<span>{userprofileform}<span></span>";
-        $filtered = format_text($html, FORMAT_HTML, array('context' => $context));
+        $filtered = format_text($html, FORMAT_HTML, ['context' => $context]);
         // There should be 1 user profile form.
-        $this->assertContains('<div class="user_profile_form"', $filtered);
+        $this->assertStringContainsString('<div class="user_profile_form"', $filtered);
     }
 
     /**
@@ -123,7 +170,7 @@ class filter_test extends advanced_testcase {
      * @param int $expectedcount
      * @param array $completions
      * @param array $expectedactivities
-     * @throws moodle_exception
+     * @covers       \filter_envf\output\course_activity_list
      */
     public function test_activity_list_renderer($expectedcount, $completions, $expectedactivities) {
         global $PAGE;
@@ -148,50 +195,6 @@ class filter_test extends advanced_testcase {
                 $this->assertEquals($expected, $activity->$key);
             }
         }
-    }
-
-    /**
-     * Data provider for test_activity_list_renderer test
-     *
-     * @return array[]
-     */
-    public function activity_list_provider() {
-        global $CFG;
-        require_once($CFG->libdir.'/completionlib.php');
-        return array(
-            'No completion' => array(
-                'expectedcount' => 2,
-                'completions' => array(COMPLETION_NOT_VIEWED, COMPLETION_NOT_VIEWED),
-                'activities' => array(
-                    array('name' => 'Step 1', 'isdisabled' => false, 'iscompleted' => false, 'hasactionbutton' => true),
-                    array('name' => 'Step 2', 'isdisabled' => false, 'iscompleted' => false, 'hasactionbutton' => false)
-                ),
-            ),
-            'First activity completed' => array(
-                'expectedcount' => 2,
-                'completions' => array(COMPLETION_COMPLETE, COMPLETION_NOT_VIEWED),
-                'activities' => array(
-                    array('name' => 'Step 1', 'isdisabled' => false, 'iscompleted' => true, 'hasactionbutton' => false),
-                    array('name' => 'Step 2', 'isdisabled' => false, 'iscompleted' => false, 'hasactionbutton' => true)
-                )
-            ),
-            'Both activity completed' => array(
-                'expectedcount' => 2,
-                'completions' => array(COMPLETION_COMPLETE, COMPLETION_COMPLETE),
-                'activities' => array(
-                    array('name' => 'Step 1', 'isdisabled' => false, 'iscompleted' => true, 'hasactionbutton' => false),
-                    array('name' => 'Step 2', 'isdisabled' => false, 'iscompleted' => true, 'hasactionbutton' => true)
-                )
-            ),
-            'Only second activity completed' => array(
-                'expectedcount' => 2,
-                'completions' => array(COMPLETION_NOT_VIEWED, COMPLETION_COMPLETE),
-                'activities' => array(
-                    array('name' => 'Step 1', 'isdisabled' => false, 'iscompleted' => false, 'hasactionbutton' => true),
-                    array('name' => 'Step 2', 'isdisabled' => false, 'iscompleted' => true, 'hasactionbutton' => false)
-                )
-            ),
-        );
     }
 
 }
