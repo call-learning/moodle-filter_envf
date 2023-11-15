@@ -124,14 +124,26 @@ class envf_user_edit_form extends \user_edit_form {
         $purpose = user_edit_map_field_purpose($userid, 'username');
         $usernamelabel = utils::get_username_label($userid);
 
-        $mform->addElement('text', 'username', $usernamelabel, 'size="20"' . $purpose);
-        $mform->addHelpButton('username', 'username', 'auth');
-        $mform->setType('username', PARAM_RAW);
-
         list($authoptions, $cannotchangepass, $cannotchangeusername) = $this->get_auth_info($userid);
         if ($userid !== -1) {
-            if (in_array($user->auth, $cannotchangeusername)) {
-                $mform->freeze('username');
+            $currentuser = core_user::get_user($userid);
+            if ($currentuser && $currentuser->auth == 'psup') {
+                $mform->addElement('text', 'user_profile_' . utils::AUTH_PSUP_USERNAME_FIELD, $usernamelabel,
+                    'size="20"' . $purpose);
+                $mform->setType('user_profile_' . utils::AUTH_PSUP_USERNAME_FIELD, PARAM_ALPHANUMEXT);
+                utils::get_user_info_data($userid, utils::AUTH_PSUP_USERNAME_FIELD);
+                $mform->setDefault('user_profile_' . utils::AUTH_PSUP_USERNAME_FIELD,
+                    utils::get_user_info_data($userid, utils::AUTH_PSUP_USERNAME_FIELD));
+                $mform->freeze('user_profile_psupid');
+                $mform->addElement('hidden', 'username', $currentuser->username);
+                $mform->setType('username', PARAM_RAW);
+            } else {
+                $mform->addElement('text', 'username', $usernamelabel, 'size="20"' . $purpose);
+                $mform->addHelpButton('username', 'username', 'auth');
+                $mform->setType('username', PARAM_RAW);
+                if (in_array($user->auth, $cannotchangeusername)) {
+                    $mform->freeze('username');
+                }
             }
         }
 
