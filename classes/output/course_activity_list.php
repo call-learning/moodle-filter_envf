@@ -71,7 +71,7 @@ class course_activity_list implements renderable, templatable {
                 foreach ($activities as $cm) {
                     $activity = new stdClass();
 
-                    if ($cm->is_visible_on_course_page()) {
+                    if (!$cm->is_user_access_restricted_by_capability()) {
                         $userstatus = $completion->get_data($cm, false, $this->user->id);
                         $available = $cm->available;
                         $completed = $userstatus->completionstate == COMPLETION_COMPLETE;
